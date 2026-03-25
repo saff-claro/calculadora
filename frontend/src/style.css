@@ -1,0 +1,163 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.calculator {
+  background: #1e1e2e;
+  border-radius: 24px;
+  padding: 24px;
+  width: 340px;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ── Display ─────────────────────────────────── */
+.display {
+  background: #13131f;
+  border-radius: 16px;
+  padding: 16px 20px 12px;
+  margin-bottom: 20px;
+  text-align: right;
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.display__expression {
+  font-size: 14px;
+  color: #6b7280;
+  min-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+
+.display__value {
+  font-size: 40px;
+  font-weight: 300;
+  color: #f8fafc;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -1px;
+  transition: font-size 0.1s ease;
+}
+
+.display__value.long {
+  font-size: 28px;
+}
+
+.display__error {
+  font-size: 18px;
+  color: #f87171;
+}
+
+/* ── Button grid ─────────────────────────────── */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* ── Base button ─────────────────────────────── */
+.btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 14px;
+  font-size: 20px;
+  font-weight: 500;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.08s ease, filter 0.08s ease, box-shadow 0.08s ease;
+  user-select: none;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.08s ease;
+  border-radius: inherit;
+}
+
+.btn:hover::after {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.btn:active {
+  transform: scale(0.94);
+}
+
+/* ── Number buttons ──────────────────────────── */
+.btn--num {
+  background: #2a2a3e;
+  color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ── Zero spans two columns ──────────────────── */
+.btn--zero {
+  grid-column: span 2;
+}
+
+/* ── Operator buttons ────────────────────────── */
+.btn--op {
+  background: linear-gradient(145deg, #7c3aed, #6d28d9);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(109, 40, 217, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn--op.active {
+  background: linear-gradient(145deg, #a855f7, #9333ea);
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ── Equals button ───────────────────────────── */
+.btn--equals {
+  background: linear-gradient(145deg, #059669, #047857);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(5, 150, 105, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* ── Utility buttons (C, +/-) ────────────────── */
+.btn--util {
+  background: #374151;
+  color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Clear button accent ─────────────────────── */
+.btn--clear {
+  background: linear-gradient(145deg, #dc2626, #b91c1c);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
