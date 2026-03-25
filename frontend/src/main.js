@@ -1,6 +1,5 @@
 import './style.css';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import { calculate } from './calculator.js';
 const MAX_DISPLAY_DIGITS = 16;
 
 // ── State ────────────────────────────────────────────────────────────────────
@@ -157,34 +156,22 @@ function handleOperator(op) {
   render();
 }
 
-async function handleEquals() {
+function handleEquals() {
   if (state.hasError || !state.operator || state.waitingForSecond) return;
 
-  const num1 = parseFloat(state.firstOperand);
-  const num2 = parseFloat(state.display);
+  const num1 = state.firstOperand;
+  const num2 = state.display;
   const expression = `${state.firstOperand} ${opSymbol(state.operator)} ${state.display} =`;
 
   try {
-    const response = await fetch(`${API_URL}/api/calculate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ num1, num2, operation: state.operator }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      state.display = data.error || 'Erro';
-      state.hasError = true;
-    } else {
-      state.display = formatResult(data.result);
-      state.expression = expression;
-      state.firstOperand = null;
-      state.operator = null;
-      state.waitingForSecond = false;
-    }
-  } catch {
-    state.display = 'Sem conexão';
+    const result = calculate(num1, num2, state.operator);
+    state.display = formatResult(result);
+    state.expression = expression;
+    state.firstOperand = null;
+    state.operator = null;
+    state.waitingForSecond = false;
+  } catch (err) {
+    state.display = err.message === 'Division by zero' ? 'Divisão por zero' : 'Erro';
     state.hasError = true;
   }
 
